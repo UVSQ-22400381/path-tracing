@@ -5,7 +5,7 @@ typedef unsigned char byte;
 
 struct Pixel {
   byte r, g, b;
-}
+};
 
 struct Image {
   size_t width;
@@ -13,12 +13,13 @@ struct Image {
   struct Pixel *pixels;
 };
 
-struct Image new_img(int width, int height);
+struct Image new_img(size_t width, size_t height);
 
 void free_image(struct Image *img);
 
-bool save_img_ascii(struct Image *img, char *path);
+int save_img_ascii(struct Image *img, char *path);
 
-bool save_img_binary(struct Image *img, char *path);
+// probably won't use this version
+int save_img_binary(struct Image *img, char *path);
 
 #endif
