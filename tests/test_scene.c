@@ -4,6 +4,7 @@
 #include "scene.h"
 
 void test_scene_load(void) {
-    int code = load_scene("./scene-0.txt");
+    struct Scene scene = {0};
+    int code = load_scene(&scene, "./scene-0.txt");
     TEST_ASSERT_EQUAL(code, 0);
 }
