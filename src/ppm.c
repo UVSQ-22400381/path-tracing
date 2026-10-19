@@ -35,5 +35,6 @@ int save_img_ascii(struct Image *img, char *path) {
     format_pixel_ascii(img->pixels[i], f, (i % img->width == (img->width - 1)));
   }
 
+  fclose(f);
   return 0;
 }
