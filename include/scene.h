@@ -26,5 +26,6 @@ struct Scene {
 
 struct Scene create_scene(size_t n);
 void free_scene(struct Scene* s);
+int load_scene(char* path);
 
 #endif

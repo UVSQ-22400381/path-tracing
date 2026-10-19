@@ -27,7 +27,11 @@ if (NOT unity_POPULATED)
     add_subdirectory(${unity_SOURCE_DIR} ${unity_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-add_executable(test_runner tests/test_runner.c tests/test_image.c src/ppm.c)
+add_executable(test_runner
+    tests/test_runner.c tests/test_image.c tests/test_scene.c
+    src/ppm.c
+    src/scene.c src/scene-parser.c
+)
 target_include_directories(test_runner PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(test_runner PRIVATE unity)
 
