@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/test_runner.dir/tests/test_image.c.o.d"
   "CMakeFiles/test_runner.dir/tests/test_runner.c.o"
   "CMakeFiles/test_runner.dir/tests/test_runner.c.o.d"
+  "CMakeFiles/test_runner.dir/tests/test_vec3.c.o"
+  "CMakeFiles/test_runner.dir/tests/test_vec3.c.o.d"
   "test_runner"
   "test_runner.pdb"
 )

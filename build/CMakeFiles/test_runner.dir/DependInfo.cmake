@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/macbookdesarah/path-tracing/src/ppm.c" "CMakeFiles/test_runner.dir/src/ppm.c.o" "gcc" "CMakeFiles/test_runner.dir/src/ppm.c.o.d"
   "/Users/macbookdesarah/path-tracing/tests/test_image.c" "CMakeFiles/test_runner.dir/tests/test_image.c.o" "gcc" "CMakeFiles/test_runner.dir/tests/test_image.c.o.d"
   "/Users/macbookdesarah/path-tracing/tests/test_runner.c" "CMakeFiles/test_runner.dir/tests/test_runner.c.o" "gcc" "CMakeFiles/test_runner.dir/tests/test_runner.c.o.d"
+  "/Users/macbookdesarah/path-tracing/tests/test_vec3.c" "CMakeFiles/test_runner.dir/tests/test_vec3.c.o" "gcc" "CMakeFiles/test_runner.dir/tests/test_vec3.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

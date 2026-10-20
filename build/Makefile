@@ -272,6 +272,30 @@ tests/test_runner.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_runner.dir/build.make CMakeFiles/test_runner.dir/tests/test_runner.c.s
 .PHONY : tests/test_runner.c.s
 
+tests/test_vec3.o: tests/test_vec3.c.o
+.PHONY : tests/test_vec3.o
+
+# target to build an object file
+tests/test_vec3.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_runner.dir/build.make CMakeFiles/test_runner.dir/tests/test_vec3.c.o
+.PHONY : tests/test_vec3.c.o
+
+tests/test_vec3.i: tests/test_vec3.c.i
+.PHONY : tests/test_vec3.i
+
+# target to preprocess a source file
+tests/test_vec3.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_runner.dir/build.make CMakeFiles/test_runner.dir/tests/test_vec3.c.i
+.PHONY : tests/test_vec3.c.i
+
+tests/test_vec3.s: tests/test_vec3.c.s
+.PHONY : tests/test_vec3.s
+
+# target to generate assembly for a file
+tests/test_vec3.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_runner.dir/build.make CMakeFiles/test_runner.dir/tests/test_vec3.c.s
+.PHONY : tests/test_vec3.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -296,6 +320,9 @@ help:
 	@echo "... tests/test_runner.o"
 	@echo "... tests/test_runner.i"
 	@echo "... tests/test_runner.s"
+	@echo "... tests/test_vec3.o"
+	@echo "... tests/test_vec3.i"
+	@echo "... tests/test_vec3.s"
 .PHONY : help
 
 
