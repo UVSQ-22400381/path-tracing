@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/macbookdesarah/path-tracing/build/cmake_install.cmake",
-		"/Users/macbookdesarah/path-tracing/build/_deps/unity-build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
