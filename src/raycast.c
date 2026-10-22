@@ -27,9 +27,11 @@ Vec3 rotate_camera_vertical(Camera *cam, float alpha){
     Vec3 res;
     float c = cos(alpha);
     float s = sin( alpha);
-    Mat3 pitch={{c,-s,0},
+    Mat3 pitch={
+               {{c,-s,0},
                 {s,c,0},
-                {0,0,1}}; 
+                {0,0,1}}
+            }; 
     
     res.x = pitch.row[0].x * cam->t.x
           + pitch.row[0].y * cam->t.y
@@ -52,9 +54,13 @@ Vec3 rotate_camera_horizontal(Camera *cam, float beta){
     Vec3 res;
     float c = cos(beta);
     float s = sin( beta);
-    Mat3 yaw={{c,0,s},
-              {0,1,0},
-              {-s,0,c}}; 
+   Mat3 yaw = {
+    {
+        {c, 0, s},
+        {0, 1, 0},
+        {-s, 0, c}
+    }
+};
     
     res.x = yaw.row[0].x * cam->b.x
           + yaw.row[0].y * cam->b.y
