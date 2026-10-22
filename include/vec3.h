@@ -4,6 +4,10 @@
 
 typedef struct {float x; float y; float z;} Vec3;
 
+typedef struct {
+    Vec3 row[3];
+}Mat3;
+
 static inline Vec3 vec3_add(Vec3 a, Vec3 b) {
     return (Vec3){a.x + b.x, a.y + b.y, a.z + b.z};
 }
