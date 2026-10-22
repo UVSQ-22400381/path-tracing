@@ -1,6 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <stdlib.h>
+#include <stdio.h>
+
 enum shapetype {
     ST_SPHERE,
     ST_BOX,
@@ -20,17 +23,18 @@ struct Sphere {
     float radius;
 };
 
-struct Scene {
-    union {
-        struct Sphere sphere;
-        struct AABBox box;
-    } *shapes;
-    int *shapetypes;
-    size_t n;
+union Shape {
+    struct AABBox box;
+    struct Sphere sphere;
 };
 
-int init_scene(struct Scene* sc, size_t n);
+struct Scene {
+    size_t n;
+    union Shape *shapes;
+    int *shapetypes;
+};
+
+struct Scene load_scene_file(char* path);
 void free_scene(struct Scene* s);
-int load_scene(struct Scene* s, char* path);
 
 #endif
