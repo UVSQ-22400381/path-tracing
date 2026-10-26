@@ -17,7 +17,7 @@ static Camera test_camera(void)
 }
 
 
-//Test 1 :
+// Test 1 : Test that the ray direction at the center of the viewport is normalized.
 void test_ray_center(void)
 {
     Camera cam = test_camera();
@@ -30,7 +30,7 @@ void test_ray_center(void)
     
 }
 
-//Test 2 : 
+// Test 2 : Test that the ray direction has a unit length.
 void test_ray_is_normalized(void)
 {
     Camera cam = test_camera();
@@ -42,7 +42,7 @@ void test_ray_is_normalized(void)
     TEST_ASSERT_FLOAT_WITHIN(EPSILON, 1.0f, norm);
 }
 
-//Test 3 : 
+// Test 3 : Test that rays pointing toward opposite corners have opposite y and z components.
 void test_ray_directions_differ(void)
 {
     Camera cam = test_camera();
@@ -50,7 +50,9 @@ void test_ray_directions_differ(void)
     Vec3 ray1 = ray_direction(&cam, 0, 0, 5, 5, FOV);
     Vec3 ray2 = ray_direction(&cam, 4, 4, 5, 5, FOV);
 
+    // Check that the z components have opposite signs.
     TEST_ASSERT_FLOAT_WITHIN(EPSILON, ray1.z, -ray2.z);
+    // Check that the y components have opposite signs.
     TEST_ASSERT_FLOAT_WITHIN(EPSILON, ray1.y, -ray2.y);
 }
 
