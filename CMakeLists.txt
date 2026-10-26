@@ -27,9 +27,25 @@ if (NOT unity_POPULATED)
     add_subdirectory(${unity_SOURCE_DIR} ${unity_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-add_executable(test_runner tests/test_runner.c tests/test_image.c tests/test_vec3.c src/ppm.c)
-target_include_directories(test_runner PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(test_runner PRIVATE unity)
+
+add_executable(test_runner
+    tests/test_runner.c
+    tests/test_image.c
+    tests/test_vec3.c
+    tests/test_camera.c
+    tests/test_ray.c
+    src/ppm.c
+    src/ray.c
+    src/raycast.c
+)
+
+target_include_directories(test_runner PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
+)
+
+target_link_libraries(test_runner PRIVATE unity m)
+
 
 add_custom_target(test test_runner
     DEPENDS $<TARGET_FILE:test_runner>
