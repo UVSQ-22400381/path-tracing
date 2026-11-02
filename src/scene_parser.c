@@ -16,6 +16,10 @@ int init_temp(struct TempScene* tsc, size_t n) {
         return -1;
     }
 
+    if (n == 0) {
+        return 0;
+    }
+
     void* mem = NULL;
     mem = malloc(sizeof(int) * n);
     if (!mem) {

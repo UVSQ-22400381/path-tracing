@@ -1,0 +1,6 @@
+# this can't work since N is not on the first line
+
+2
+
+S 30.0 10.0 8.0
+S 15.0 7.0 6.0 8.0
