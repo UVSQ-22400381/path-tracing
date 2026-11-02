@@ -1,12 +1,20 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <stdlib.h>
+#include <stdio.h>
+
+enum shapetype {
+    ST_SPHERE,
+    ST_BOX,
+};
+
 struct Vector3 {
   float x, y, z;
 };
 typedef struct Vector3 Vec3;
 
-struct AABCube {
+struct AABBox {
     Vec3 low, high;
 };
 
@@ -15,16 +23,18 @@ struct Sphere {
     float radius;
 };
 
-struct Scene {
-    union {
-        struct AABCube cube;
-        struct Sphere sphere;
-    } *shapes;
-    int *shapetypes;
-    size_t n;
+union Shape {
+    struct AABBox box;
+    struct Sphere sphere;
 };
 
-struct Scene create_scene(size_t n);
+struct Scene {
+    size_t n;
+    union Shape *shapes;
+    int *shapetypes;
+};
+
+struct Scene load_scene_file(char* path);
 void free_scene(struct Scene* s);
 
 #endif
