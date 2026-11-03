@@ -28,12 +28,25 @@ if (NOT unity_POPULATED)
 endif()
 
 add_executable(test_runner
-    tests/test_runner.c tests/test_image.c tests/test_scene.c
+    tests/test_runner.c
+    tests/test_image.c
+    tests/test_scene.c
+    tests/test_vec3.c
+    tests/test_camera.c
+    tests/test_ray.c
     src/ppm.c
-    src/scene.c src/scene_parser.c
+    src/ray.c
+    src/raycast.c
+    src/scene.c
+    src/scene_parser.c
 )
-target_include_directories(test_runner PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(test_runner PRIVATE unity)
+
+target_include_directories(test_runner PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
+)
+
+target_link_libraries(test_runner PRIVATE unity m)
 
 add_custom_target(test test_runner
     DEPENDS $<TARGET_FILE:test_runner>
