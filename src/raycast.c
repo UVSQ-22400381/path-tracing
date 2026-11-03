@@ -2,78 +2,78 @@
 #include  <stdlib.h>
 #include "raycast.h"
 
-Camera* new_camera(Vec3 position){
-    Camera* cam=malloc(sizeof(Camera));
-    if( cam == NULL){
+static const Vec3
+T = { 1.f, 0.f, 0.f },
+V = { 0.f, 1.f, 0.f },
+B = { 0.f, 0.f, 1.f };
+
+void free_camera(Camera* cam) {
+    free(cam);
+}
+
+// rotation de la caméra autour de l'axe z
+Vec3 pitch(float alpha, Vec3 v){
+    const float c = cosf(alpha);
+    const float s = sinf(alpha);
+
+    Vec3 res = {
+        .x = v.x * c - v.y * s,
+        .y = v.x * s + v.y * c,
+        .z = v.z,
+    };
+
+    return res;
+}
+
+// rotation de la caméra autour de l'axe y
+Vec3 yaw(float beta, Vec3 v){
+    const float c = cosf(beta);
+    const float s = sinf(beta);
+    
+    Vec3 res = {
+        .x = v.x * c + v.z * s,
+        .y = v.y,
+        .z = v.x * (-s) + v.z * c,
+    };
+
+    return res;
+}
+
+void rotate_cam(Camera *cam) {
+    const float beta  = cam->beta;
+    const float alpha = cam->alpha;
+
+    cam->t = yaw(beta, pitch(alpha, T));
+    cam->v = yaw(beta, pitch(alpha, V));
+    cam->b = yaw(beta, pitch(alpha, B));
+}
+
+void cam_look_at(Camera *cam, Vec3 target) {
+    Vec3 d = vec3_normalize(vec3_sub(target, cam->position));
+
+    if (d.y > 0.9999f)  d.y = 0.9999f;
+    if (d.y < -0.9999f) d.y = -0.9999f;
+
+    cam->alpha = asinf(d.y);
+    cam->beta  = atan2f(-d.z, d.x);
+
+    rotate_cam(cam);
+}
+
+Camera* new_camera(Vec3 position, Vec3 target){
+    Camera* cam = malloc(sizeof(Camera));
+    if (cam == NULL) {
         perror("Erreur d'allocation");
         exit(1);
     }
 
     cam->position=position;
-    //initialisation avec la base canonique
-    cam->t=(Vec3){1.0f, 0.0f, 0.0f}; // axe x
-    cam->v=(Vec3){0.0f, 1.0f, 0.0f}; // axe y
-    cam->b=(Vec3){0.0f, 0.0f, 1.0f}; // axe z
+
+    cam->t = T;
+    cam->v = V;
+    cam->b = B;
+
+    cam_look_at(cam, target);
 
     return cam;
-}
-
-void free_camera(Camera* cam){
-    free(cam);
-}
-
-//rotation de la caméra autour de l'axe horiznetal z
-Vec3 rotate_camera_vertical(Camera *cam, float alpha){
-    Vec3 res;
-    float c = cos(alpha);
-    float s = sin( alpha);
-    Mat3 pitch={
-               {{c,-s,0},
-                {s,c,0},
-                {0,0,1}}
-            }; 
-    
-    res.x = pitch.row[0].x * cam->t.x
-          + pitch.row[0].y * cam->t.y
-          + pitch.row[0].z * cam->t.z;
-
-    res.y = pitch.row[1].x * cam->t.x
-          + pitch.row[1].y * cam->t.y
-          + pitch.row[1].z * cam->t.z;
-
-    res.z = pitch.row[2].x * cam->t.x
-          + pitch.row[2].y * cam->t.y
-          + pitch.row[2].z * cam->t.z;
-
-    return res;
-
-}
-
-//rotation de la caméra autour de l'axe vertical y
-Vec3 rotate_camera_horizontal(Camera *cam, float beta){
-    Vec3 res;
-    float c = cos(beta);
-    float s = sin( beta);
-   Mat3 yaw = {
-    {
-        {c, 0, s},
-        {0, 1, 0},
-        {-s, 0, c}
-    }
-};
-    
-    res.x = yaw.row[0].x * cam->b.x
-          + yaw.row[0].y * cam->b.y
-          + yaw.row[0].z * cam->b.z;
-
-    res.y = yaw.row[1].x * cam->b.x
-          + yaw.row[1].y * cam->b.y
-          + yaw.row[1].z * cam->b.z;
-
-    res.z = yaw.row[2].x * cam->b.x
-          + yaw.row[2].y * cam->b.y
-          + yaw.row[2].z * cam->b.z;
-
-    return res;
-
 }

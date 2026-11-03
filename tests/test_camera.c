@@ -4,12 +4,13 @@
 #include "raycast.h"
 
 void test_cam_alloc(void){
-    Vec3 pos= (Vec3){2,3,2};
-    Vec3 t = (Vec3){1,0,0};
-    Vec3 v = (Vec3){0,1,0};
-    Vec3 b = (Vec3){0,0,1};
+    const Vec3 pos    = { 2.f, 3.f, 2.f };
+    const Vec3 target = vec3_add(pos, (Vec3){ 1.f, 0.f, 0.f });
+    const Vec3 t = { 1.f, 0.f, 0.f };
+    const Vec3 v = { 0.f, 1.f, 0.f };
+    const Vec3 b = { 0.f, 0.f, 1.f };
 
-    Camera* cam = new_camera(pos);
+    Camera* cam = new_camera(pos, target);
     TEST_ASSERT_NOT_NULL(cam);
     TEST_ASSERT_EQUAL_FLOAT(pos.x, cam->position.x);
     TEST_ASSERT_EQUAL_FLOAT(pos.y, cam->position.y);
