@@ -53,3 +53,8 @@ add_custom_target(test test_runner
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Running unit tests :"
 )
+
+add_executable(pathtracer src/main.c src/ppm.c src/ray.c src/raycast.c src/collision.c
+)
+target_compile_options(pathtracer PRIVATE ${COMMON_COMPILE_FLAGS})
+target_link_libraries(pathtracer PRIVATE m)
