@@ -19,6 +19,8 @@ extern void test_scene_load_invalid_0(void);
 extern void test_scene_load_invalid_1(void);
 extern void test_scene_load_nothing(void);
 
+extern void test_ray_sphere_intersection(void);
+
 void setUp(void) {}
 void tearDown(void) {}
 
@@ -44,5 +46,6 @@ int main(void) {
     RUN_TEST(test_ray_center);
     RUN_TEST(test_ray_is_normalized);
     RUN_TEST(test_ray_directions_differ);
+    RUN_TEST(test_ray_sphere_intersection);
     return UNITY_END();
 }

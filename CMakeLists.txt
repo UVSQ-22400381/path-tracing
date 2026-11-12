@@ -39,6 +39,7 @@ add_executable(test_runner
     src/raycast.c
     src/scene.c
     src/scene_parser.c
+    src/collision.c
 )
 
 target_include_directories(test_runner PRIVATE

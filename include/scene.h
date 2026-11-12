@@ -3,16 +3,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "vec3.h"
 
 enum shapetype {
     ST_SPHERE,
     ST_BOX,
 };
 
-struct Vector3 {
-  float x, y, z;
-};
-typedef struct Vector3 Vec3;
+
 
 struct AABBox {
     Vec3 low, high;

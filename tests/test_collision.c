@@ -1,8 +1,8 @@
 #include "unity.h"
 #include "collision.h"
 #include "scene.h"
-#include "vec.h"
 
+/** Tests the intersection of a ray with a sphere. */
 void test_ray_sphere_intersection(void) {
     // Define a ray
     Ray ray;
