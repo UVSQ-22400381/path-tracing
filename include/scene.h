@@ -28,9 +28,14 @@ union Shape {
     struct Sphere sphere;
 };
 
+struct Color {
+    unsigned char r, g ,b;
+};
+
 struct Scene {
     size_t n;
     union Shape *shapes;
+    struct Color *colors;
     int *shapetypes;
 };
 

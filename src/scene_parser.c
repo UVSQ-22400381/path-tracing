@@ -7,6 +7,7 @@ struct TempScene {
     size_t n;
     union Shape *shapes;
     int *shapetypes;
+    struct Color *colors;
 
     size_t len;
 };
@@ -34,6 +35,14 @@ int init_temp(struct TempScene* tsc, size_t n) {
     }
     tsc->shapes = mem;
 
+    mem = malloc(sizeof(struct Color) * n);
+    if (!mem) {
+        free(tsc->shapes);
+        free(tsc->shapetypes);
+        return -1;
+    }
+    tsc->colors = mem;
+
     tsc->n = n;
     tsc->len = 0;
     return 0;
@@ -42,8 +51,10 @@ int init_temp(struct TempScene* tsc, size_t n) {
 void free_temp(struct TempScene* tsc) {
     free(tsc->shapes);
     free(tsc->shapetypes);
+    free(tsc->colors);
     tsc->shapes = NULL;
     tsc->shapetypes = NULL;
+    tsc->colors = NULL;
     tsc->len = 0;
     tsc->n = 0;
 }
@@ -62,6 +73,17 @@ int parse_aabb(struct AABBox* b, char* line) {
     ) == 6 ? 0 : -1;
 }
 
+int parse_color(struct Color* c, const char* tok) {
+    unsigned int hex;
+    if (sscanf(tok, "%x", &hex) != 1) {
+        return -1;
+    }
+    c->r = (hex >> 16) & 0xFF;
+    c->g = (hex >>  8) & 0xFF;
+    c->b =  hex        & 0xFF;
+    return 0;
+}
+
 int add_obj(struct TempScene* tsc, char* obj) {
     int ok = -1;
     if (tsc->len >= tsc->n) {
@@ -72,16 +94,33 @@ int add_obj(struct TempScene* tsc, char* obj) {
         return ok;
     }
 
+    struct Color col = {0};
+    int has_color = 0;
+
+    char buf[256];
+    strncpy(buf, obj, sizeof(buf) - 1);
+    buf[sizeof(buf) - 1] = '\0';
+
+    char* last = NULL;
+    for (char* tok = strtok(buf, " \t\n"); tok; tok = strtok(NULL, " \t\n")) {
+        last = tok;
+    }
+    if (last && parse_color(&col, last) == 0) {
+        has_color = 1;
+    }
+
     if (obj[0] == 'S') {
         ok = parse_sphere(&tsc->shapes[tsc->len].sphere, obj + 2);
         if (ok == 0) {
             tsc->shapetypes[tsc->len] = ST_SPHERE;
+            if (has_color) tsc->colors[tsc->len] = col;
             ++tsc->len;
         }
     } else if (obj[0] == 'B') {
         ok = parse_aabb(&tsc->shapes[tsc->len].box, obj + 2);
         if (ok == 0) {
             tsc->shapetypes[tsc->len] = ST_BOX;
+            if (has_color) tsc->colors[tsc->len] = col;
             ++tsc->len;
         }
     }
@@ -89,7 +128,7 @@ int add_obj(struct TempScene* tsc, char* obj) {
     return ok;
 }
 
-#define EMPTY_SCENE (struct Scene){0, NULL, NULL}
+#define EMPTY_SCENE (struct Scene){0, NULL, NULL, NULL}
 
 struct Scene load_scene_file(char* path) {
     FILE *f = fopen(path, "r");
@@ -133,6 +172,7 @@ struct Scene load_scene_file(char* path) {
     return (struct Scene){
         .n = tsc.len,
         .shapetypes = tsc.shapetypes,
-        .shapes = tsc.shapes
+        .shapes = tsc.shapes,
+        .colors = tsc.colors
     };
 }
