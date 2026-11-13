@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include "scene.h"
 
+#define TEST_DIR "./test_scenes"
+
 void test_scene_load_valid(void) {
-    struct Scene scene = load_scene_file("./tests/test_scenes/scene_valid.txt");
+    struct Scene scene = load_scene_file(TEST_DIR "/scene_valid.txt");
 
     // SHAPE TYPES
     TEST_ASSERT_NOT_NULL(scene.shapetypes);
@@ -37,21 +39,21 @@ void test_scene_load_valid(void) {
 // while knowing which one fails/succeeds.
 
 void test_scene_load_invalid_0(void) {
-    struct Scene scene = load_scene_file("./tests/test_scenes/scene_invalid_0.txt");
+    struct Scene scene = load_scene_file(TEST_DIR "/scene_invalid_0.txt");
     TEST_ASSERT(scene.shapetypes == NULL);
     TEST_ASSERT(scene.shapes == NULL);
     TEST_ASSERT(scene.n == 0);
 }
 
 void test_scene_load_invalid_1(void) {
-    struct Scene scene = load_scene_file("./tests/test_scenes/scene_invalid_1.txt");
+    struct Scene scene = load_scene_file(TEST_DIR "/scene_invalid_1.txt");
     TEST_ASSERT(scene.shapetypes == NULL);
     TEST_ASSERT(scene.shapes == NULL);
     TEST_ASSERT(scene.n == 0);
 }
 
 void test_scene_load_nothing(void) {
-    struct Scene scene = load_scene_file("./tests/test_scenes/scene_comments.txt");
+    struct Scene scene = load_scene_file(TEST_DIR "/scene_comments.txt");
     TEST_ASSERT(scene.shapetypes != NULL);
     TEST_ASSERT(scene.shapes != NULL);
     TEST_ASSERT(scene.n == 0);
