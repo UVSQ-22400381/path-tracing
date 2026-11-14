@@ -8,7 +8,7 @@
  * @param sphere The sphere to test intersection with
  * @return The parameter t of the intersection point, or -1.0f if no intersection
  */
-float ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere) {
+Vec3 ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere) {
     Vec3 oc = vec3_sub(ray->origin, sphere->center);
     float a = vec3_dot(ray->direction, ray->direction);
     //printf("a: %f\n", a);
@@ -18,14 +18,23 @@ float ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere) {
     //printf("c: %f\n", c);
     float discriminant = b * b - 4 * a * c;
     //printf("discriminant: %f\n", discriminant);
-    if (discriminant < 0){
-        return -1.0f; // No intersection
-    } else {
-        return (-b - sqrtf(discriminant)) / (2.0f * a); // Return the nearest intersection point
+
+    if (discriminant < 0.0f || a==0.0f ){
+       return (Vec3){NAN, NAN, NAN};
     } 
+    float t=(-b - sqrtf(discriminant)) / (2.0f * a); // Return the nearest intersection point
+    if(t<0){
+        t=(-b + sqrtf(discriminant)) / (2.0f * a); 
+    }
+    if(t<0){
+        return (Vec3){NAN,NAN,NAN};
+    }
+    return vec3_add(ray->origin, vec3_mul(ray->direction, t));
 }
 
-float ray_box_intersection(const Ray *ray, const struct AABBox *box) {
+
+
+Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
     float tminx, tmaxx;
     float tminy, tmaxy;
     float tminz, tmaxz;
@@ -35,25 +44,26 @@ float ray_box_intersection(const Ray *ray, const struct AABBox *box) {
 
     //Axe x
     if(ray->direction.x==0.0f){
-        if(ray->origin.x < box->low.x || ray->direction.x > box->high.x){
-            return -1.0f;
-            tminx = -INFINITY;
-            tmaxx = INFINITY;
+        if(ray->origin.x < box->low.x || ray->origin.x > box->high.x){
+            return (Vec3){NAN, NAN, NAN};
         }
-        else {
-            tminx = (box->low.x - ray->origin.x) / ray->direction.x;
-            tmaxx = (box->high.x - ray->origin.x) / ray->direction.x;
-            if(tminx > tmaxx){
-                tminx = tmp;
-                tminx = tmaxx;
-                tmaxx = tmp;
-            }
+        tminx = -INFINITY;
+        tmaxx = INFINITY;
+    } else {
+        tminx = (box->low.x - ray->origin.x) / ray->direction.x;
+        tmaxx = (box->high.x - ray->origin.x) / ray->direction.x;
+        if(tminx > tmaxx){
+            tminx = tmp;
+            tminx = tmaxx;
+            tmaxx = tmp;
         }
+       
     }
     // Axe y 
-     if (ray->direction.y == 0.0f) {
+    if (ray->direction.y == 0.0f) {
         if (ray->origin.y < box->low.y || ray->origin.y > box->high.y)
-            return -1.0f;
+            return (Vec3){NAN, NAN, NAN};
+
         tminy = -INFINITY;
         tmaxy = INFINITY;
     } else {
@@ -69,7 +79,8 @@ float ray_box_intersection(const Ray *ray, const struct AABBox *box) {
     //Axe z 
     if (ray->direction.z == 0.0f) {
         if (ray->origin.z < box->low.z || ray->origin.z > box->high.z)
-            return -1.0f;
+            return (Vec3){NAN, NAN, NAN};
+
         tminz = -INFINITY;
         tmaxz = INFINITY;
     } else {
@@ -82,20 +93,22 @@ float ray_box_intersection(const Ray *ray, const struct AABBox *box) {
             tmaxz = tmp;
         }
     }
-
     //Inetersection 
     t_close = fmaxf(tminx, fmaxf(tminy, tminz));
-    t_far = fmaxf(tmaxx,fmaxf(tmaxy,tmaxz));
+    t_far = fminf(tmaxx,fminf(tmaxy,tmaxz));
 
     //If no intersection
     if(t_close > t_far || t_far <0.0f){
-        return -1.0f;
+         return (Vec3){NAN, NAN, NAN};
     }
 
     if (t_close < 0.0f)
-        return t_far;
+         t_close=t_far;
 
-    return t_close;
+    return vec3_add(
+        ray->origin,
+        vec3_mul(ray->direction, t_close)
+    );
 
 }
 

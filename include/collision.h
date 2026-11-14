@@ -5,9 +5,9 @@
 #include "scene.h"
 #include "ray.h"
 
-float ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere);
+Vec3 ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere);
 
-float ray_aabb_intersection(const Ray *ray, const struct AABBox *box);
+Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box);
 
 
 
