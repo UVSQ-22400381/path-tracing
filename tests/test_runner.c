@@ -21,6 +21,8 @@ extern void test_scene_load_nothing(void);
 
 extern void test_ray_sphere_intersection(void);
 extern void test_ray_box_intersection(void);
+extern void test_first_scene_collision_returns_closest_sphere(void);
+extern void test_first_scene_collision_returns_box(void);
 
 void setUp(void) {}
 void tearDown(void) {}
@@ -49,5 +51,7 @@ int main(void) {
     RUN_TEST(test_ray_directions_differ);
     RUN_TEST(test_ray_sphere_intersection);
     RUN_TEST(test_ray_box_intersection);
+    RUN_TEST(test_first_scene_collision_returns_closest_sphere);
+    RUN_TEST(test_first_scene_collision_returns_box);
     return UNITY_END();
 }
