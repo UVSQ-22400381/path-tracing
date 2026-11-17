@@ -1,6 +1,7 @@
 
 #include "collision.h"
 #include <math.h>
+#include <stddef.h>
 
 
 /** Calculates the intersection of a ray with a sphere.
@@ -113,3 +114,54 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
 }
 
 
+
+Collision first_scene_collision(Vec eye, const Ray *ray, const struct Scene *scene) {
+
+    // Initialize the result
+    Collison result = {
+        .object_index = -1,
+        .point = {NAN, NAN, NAN}
+    };
+
+    float t_min INFINITY;
+
+    if (ray == NULL || scene == NULL) {
+        return result;
+    }
+
+    // Iterate through all objects in the scene
+    for (size_t i = 0; i < scene->n; i++) {
+
+        Vec3 intersection;
+
+        // Compute the intersection according to the object type
+        if (scene->shapetypes[i] == ST_SPHERE) {
+
+            Vec3 intersection = ray_sphere_intersection(ray, &scene->shapes[i].sphere);
+
+        } else if (scene->shapetypes[i] == ST_BOX) {
+
+            Vec3 intersection = ray_box_intersection(ray, &scene->shapes[i].box);
+
+        } else {
+            continue;
+        }
+
+        // Skip invalid intersections
+        if (!isfinite(intersection.x) || !isfinite(intersection.y) || !isfinite(intersection.z)) {
+            continue;
+        }
+
+        Vec3 diff = vec3_sub(intersection, eye);
+        float t = vec3_length_squared(diff);
+
+        // Keep the closest intersection
+        if (t < t_min) {
+            t_min = t;
+            result.object_index = (int)i;
+            result.point = intersection;
+        }
+    }
+
+    return result;
+}
