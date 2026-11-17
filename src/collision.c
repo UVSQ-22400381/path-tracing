@@ -137,11 +137,11 @@ Collision first_scene_collision(Vec3 eye, const Ray *ray, const struct Scene *sc
         // Compute the intersection according to the object type
         if (scene->shapetypes[i] == ST_SPHERE) {
 
-            Vec3 intersection = ray_sphere_intersection(ray, &scene->shapes[i].sphere);
+            intersection = ray_sphere_intersection(ray, &scene->shapes[i].sphere);
 
         } else if (scene->shapetypes[i] == ST_BOX) {
 
-            Vec3 intersection = ray_box_intersection(ray, &scene->shapes[i].box);
+            intersection = ray_box_intersection(ray, &scene->shapes[i].box);
 
         } else {
             continue;
