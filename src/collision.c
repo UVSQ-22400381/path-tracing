@@ -115,15 +115,15 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
 
 
 
-Collision first_scene_collision(Vec eye, const Ray *ray, const struct Scene *scene) {
+Collision first_scene_collision(Vec3 eye, const Ray *ray, const struct Scene *scene) {
 
     // Initialize the result
-    Collison result = {
+    Collision result = {
         .object_index = -1,
         .point = {NAN, NAN, NAN}
     };
 
-    float t_min INFINITY;
+    float t_min = INFINITY;
 
     if (ray == NULL || scene == NULL) {
         return result;

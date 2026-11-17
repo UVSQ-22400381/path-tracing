@@ -5,10 +5,11 @@
 #include "scene.h"
 #include "ray.h"
 
+
 typedef struct {
     int object_index;
     Vec3 point;
-} Collision
+} Collision;
 
 Vec3 ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere);
 
