@@ -1,6 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <stddef.h>
+
 typedef unsigned char byte;
 
 struct Pixel {
