@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
     }
 
     printf("> Writing image to './cornell_render.ppm'\n");
-    save_img_ascii(&img, "./cornell_render.ppm");
+    save_img_ascii(&img, "./render.ppm");
 
     printf("> Cleaning up and closing program\n");
     free_image(&img);
