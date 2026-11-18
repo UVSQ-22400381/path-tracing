@@ -83,10 +83,8 @@ void test_first_scene_collision_returns_closest_sphere(void)
         .direction = {1.0f, 0.0f, 0.0f}
     };
 
-    Vec3 eye = {0.0f, 0.0f, 0.0f};
-
     // Find the first collision.
-    Collision result = first_scene_collision(eye, &ray, &scene);
+    Collision result = first_scene_collision(&ray, &scene);
 
     // Check that the closest sphere was selected.
     TEST_ASSERT_EQUAL_INT(0, result.object_index);
@@ -126,10 +124,8 @@ void test_first_scene_collision_returns_box(void)
         .direction = {1.0f, 0.0f, 0.0f}
     };
 
-    Vec3 eye = {0.0f, 0.0f, 0.0f};
-
     // Find the first collision.
-    Collision result = first_scene_collision(eye, &ray, &scene);
+    Collision result = first_scene_collision(&ray, &scene);
 
     // Check that the box was selected.
     TEST_ASSERT_EQUAL_INT(0, result.object_index);

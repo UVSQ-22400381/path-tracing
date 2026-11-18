@@ -22,10 +22,10 @@ Vec3 ray_sphere_intersection(const Ray *ray, const struct Sphere *sphere) {
 
     if (discriminant < 0.0f || a==0.0f ){
        return (Vec3){NAN, NAN, NAN};
-    } 
+    }
     float t=(-b - sqrtf(discriminant)) / (2.0f * a); // Return the nearest intersection point
     if(t<0){
-        t=(-b + sqrtf(discriminant)) / (2.0f * a); 
+        t=(-b + sqrtf(discriminant)) / (2.0f * a);
     }
     if(t<0){
         return (Vec3){NAN,NAN,NAN};
@@ -41,10 +41,10 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
     float tminz, tmaxz;
 
     float t_close, t_far;
-    float tmp;
+    float tmp = 0.f;
 
     //Axe x
-    if(ray->direction.x==0.0f){
+    if(ray->direction.x == 0.0f){
         if(ray->origin.x < box->low.x || ray->origin.x > box->high.x){
             return (Vec3){NAN, NAN, NAN};
         }
@@ -53,14 +53,14 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
     } else {
         tminx = (box->low.x - ray->origin.x) / ray->direction.x;
         tmaxx = (box->high.x - ray->origin.x) / ray->direction.x;
-        if(tminx > tmaxx){
-            tminx = tmp;
+        if(tminx > tmaxx) {
+            tmp   = tminx;
             tminx = tmaxx;
             tmaxx = tmp;
         }
-       
     }
-    // Axe y 
+
+    // Axe y
     if (ray->direction.y == 0.0f) {
         if (ray->origin.y < box->low.y || ray->origin.y > box->high.y)
             return (Vec3){NAN, NAN, NAN};
@@ -77,7 +77,8 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
             tmaxy = tmp;
         }
     }
-    //Axe z 
+
+    //Axe z
     if (ray->direction.z == 0.0f) {
         if (ray->origin.z < box->low.z || ray->origin.z > box->high.z)
             return (Vec3){NAN, NAN, NAN};
@@ -94,12 +95,13 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
             tmaxz = tmp;
         }
     }
-    //Inetersection 
+
+    //Inetersection
     t_close = fmaxf(tminx, fmaxf(tminy, tminz));
     t_far = fminf(tmaxx,fminf(tmaxy,tmaxz));
 
     //If no intersection
-    if(t_close > t_far || t_far <0.0f){
+    if(t_close > t_far || t_far < 0.0f){
          return (Vec3){NAN, NAN, NAN};
     }
 
@@ -113,9 +115,20 @@ Vec3 ray_box_intersection(const Ray *ray, const struct AABBox *box) {
 
 }
 
+Vec3 get_intersection(const Ray *r, const size_t o, const struct Scene *s) {
+    Vec3 intersection;
 
+    if (s->shapetypes[o] == ST_SPHERE)
+        intersection = ray_sphere_intersection(r, &s->shapes[o].sphere);
+    else if (s->shapetypes[o] == ST_BOX)
+        intersection = ray_box_intersection(r, &s->shapes[o].box);
+    else
+        intersection = (Vec3){NAN, NAN, NAN};
 
-Collision first_scene_collision(Vec3 eye, const Ray *ray, const struct Scene *scene) {
+    return intersection;
+}
+
+Collision first_scene_collision(const Ray *ray, const struct Scene *scene) {
 
     // Initialize the result
     Collision result = {
@@ -132,33 +145,23 @@ Collision first_scene_collision(Vec3 eye, const Ray *ray, const struct Scene *sc
     // Iterate through all objects in the scene
     for (size_t i = 0; i < scene->n; i++) {
 
-        Vec3 intersection;
-
-        // Compute the intersection according to the object type
-        if (scene->shapetypes[i] == ST_SPHERE) {
-
-            intersection = ray_sphere_intersection(ray, &scene->shapes[i].sphere);
-
-        } else if (scene->shapetypes[i] == ST_BOX) {
-
-            intersection = ray_box_intersection(ray, &scene->shapes[i].box);
-
-        } else {
-            continue;
-        }
+        Vec3 intersection = get_intersection(ray, i, scene);
 
         // Skip invalid intersections
-        if (!isfinite(intersection.x) || !isfinite(intersection.y) || !isfinite(intersection.z)) {
+        if (!isfinite(intersection.x) ||
+            !isfinite(intersection.y) ||
+            !isfinite(intersection.z))
+        {
             continue;
         }
 
-        Vec3 diff = vec3_sub(intersection, eye);
+        Vec3 diff = vec3_sub(intersection, ray->origin);
         float t = vec3_length_squared(diff);
 
         // Keep the closest intersection
         if (t < t_min) {
             t_min = t;
-            result.object_index = (int)i;
+            result.object_index = i;
             result.point = intersection;
         }
     }
