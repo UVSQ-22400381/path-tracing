@@ -25,6 +25,29 @@ FetchContent_MakeAvailable(unity)
 add_library(unity STATIC ${unity_SOURCE_DIR}/src/unity.c)
 target_include_directories(unity PUBLIC ${unity_SOURCE_DIR}/src)
 
+# BINARY SETUP
+
+add_executable(prog
+    src/main.c
+    src/ppm.c
+    src/ray.c
+    src/raycast.c
+    src/scene.c
+    src/scene_parser.c
+    src/collision.c
+)
+
+target_compile_options(prog PRIVATE ${COMMON_COMPILE_FLAGS})
+
+target_include_directories(prog PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
+)
+
+target_link_libraries(prog PRIVATE m)
+
+# TEST SETUP
+
 add_executable(test_runner
     tests/test_runner.c
     tests/test_image.c
