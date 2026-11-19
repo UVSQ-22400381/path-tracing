@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     // TODO: allow user to pass render configuration through CLI
     struct Scene s      = load_scene_file(argv[1]);
     const Vec3 eye      = { -10.f, 2.5f, 2.5f };
-    const Vec3 target   = { eye.x + 1.f, eye.y, eye.z };
+    const Vec3 target   = { eye.x + 1.f, eye.y + 0.25f, eye.z };
     const Camera *cam   = new_camera(eye, target);
     const float fov     = 1.0472; // 60degs in radians
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     struct Image img = new_img(SIZE, SIZE);
     for (size_t i = 0; i < SIZE; i++) {
         for (size_t j = 0; j < SIZE; j++) {
-            struct Pixel *pixel = &img.pixels[j * SIZE + i];
+            struct Pixel *pixel = &img.pixels[(SIZE - 1 - j) * SIZE + i];
             const Collision c = first_scene_collision(
                 &viewport[j * SIZE + i],
                 &s
