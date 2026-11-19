@@ -88,7 +88,7 @@ add_custom_command(TARGET test_runner POST_BUILD
         $<TARGET_FILE_DIR:test_runner>/test_scenes
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/tests/config_test.ini
-        $<TARGET_FILE_DIR:test_runner>/
+        $<TARGET_FILE_DIR:test_runner>/config.ini
     COMMENT "Copying test data files for test_runner"
 )
 

@@ -67,5 +67,8 @@ int main(void) {
     RUN_TEST(test_first_scene_collision_returns_closest_sphere);
     RUN_TEST(test_first_scene_collision_returns_box);
 
+    // CONFIG
+    RUN_TEST(test_config_load);
+
     return UNITY_END();
 }

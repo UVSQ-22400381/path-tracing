@@ -67,39 +67,40 @@ int match_field(char *field) {
 
 void assign_config_value(RenderConfig *rc, char *line) {
   char* field = strtok(line, "=");
+  char* remaining = strtok(NULL, " ");
 
   switch (match_field(field)) {
     default:
       return;
 
     case RCF_CAMPOS: {
-      const Vec3 v = parse_vec(line);
+      const Vec3 v = parse_vec(remaining);
       if (isnormal(v.x) && isnormal(v.y) && isnormal(v.z))
         rc->cam_pos = v;
       break;
     }
 
     case RCF_TARGET: {
-      const Vec3 v = parse_vec(line);
+      const Vec3 v = parse_vec(remaining);
       if (isnormal(v.x) && isnormal(v.y) && isnormal(v.z))
         rc->target = v;
       break;
     }
 
     case RCF_FOV: {
-      const float x = parse_num(line);
+      const float x = parse_num(remaining);
       if (isnormal(x)) rc->fov = x; 
       break;
     }
 
     case RCF_HEIGHT: {
-      const size_t x = parse_int(line);
+      const size_t x = parse_int(remaining);
       if (x != 0) rc->height = x; 
       break;
     }
 
     case RCF_WIDTH: {
-      const size_t x = parse_int(line);
+      const size_t x = parse_int(remaining);
       if (x != 0) rc->width = x; 
       break;
     }
