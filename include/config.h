@@ -13,4 +13,6 @@ struct RenderConfig {
 };
 typedef struct RenderConfig RenderConfig;
 
+RenderConfig init_config(void);
+
 #endif

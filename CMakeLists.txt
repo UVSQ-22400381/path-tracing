@@ -35,6 +35,7 @@ add_executable(prog
     src/scene.c
     src/scene_parser.c
     src/collision.c
+    src/config.c
 )
 
 target_compile_options(prog PRIVATE ${COMMON_COMPILE_FLAGS})
@@ -56,12 +57,14 @@ add_executable(test_runner
     tests/test_camera.c
     tests/test_ray.c
     tests/test_collision.c
+    tests/test_config.c
     src/ppm.c
     src/ray.c
     src/raycast.c
     src/scene.c
     src/scene_parser.c
     src/collision.c
+    src/config.c
 )
 
 target_compile_options(test_runner PRIVATE ${COMMON_COMPILE_FLAGS})
@@ -83,6 +86,9 @@ add_custom_command(TARGET test_runner POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
         ${PROJECT_SOURCE_DIR}/tests/test_scenes
         $<TARGET_FILE_DIR:test_runner>/test_scenes
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${PROJECT_SOURCE_DIR}/tests/config_test.ini
+        $<TARGET_FILE_DIR:test_runner>/
     COMMENT "Copying test data files for test_runner"
 )
 
